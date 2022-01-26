@@ -1,0 +1,87 @@
+#include <vector>
+
+class PriorityQueue {
+   
+    // Declare the data members here
+    vector<int> ab;
+
+   public:
+    PriorityQueue() {
+        // Implement the constructor here
+    }
+
+    /**************** Implement all the public functions here ***************/
+
+    void insert(int element) {
+        // Implement the insert() function here
+         
+        ab.push_back(element);
+        int childIndex = ab.size()-1;
+        while(childIndex > 0){
+        int parentIndex = (childIndex-1)/2 ;
+        if(ab[childIndex]>ab[parentIndex]){
+            int temp = ab[parentIndex];
+            ab[parentIndex]=ab[childIndex];
+            ab[childIndex]=temp;
+        }
+        else{
+            break;
+        }
+        childIndex = parentIndex;
+        }
+    }
+
+    int getMax() {
+        // Implement the getMax() function here
+        return ab[0];
+    }
+
+    int removeMax() {
+        if(isEmpty()) {
+			return 0;		// Priority Queue is empty
+		}
+        
+        // Implement the removeMax() function here
+        int ans = ab[0];
+		ab[0] = ab[ab.size() - 1];
+		ab.pop_back();
+        //up-heapify
+        int parentIndex = 0 ;
+        int lchildIndex = 2*(parentIndex)+1;
+        int rchildIndex = 2*(parentIndex)+2;
+        while(lchildIndex < ab.size()){
+            int maxIndex = parentIndex;
+            if(ab[maxIndex]<ab[lchildIndex]){
+                maxIndex = lchildIndex;
+            }
+            if( rchildIndex < ab.size() && ab[maxIndex]<ab[rchildIndex]){
+                maxIndex = rchildIndex;
+            }
+            if(maxIndex==parentIndex){
+                break;
+            }
+            int temp = ab[maxIndex];
+			ab[maxIndex] = ab[parentIndex];
+			ab[parentIndex] = temp;
+            
+            parentIndex = maxIndex ;
+        	lchildIndex = 2*(parentIndex)+1;
+       		rchildIndex = 2*(parentIndex)+2;
+
+            
+            
+        }
+        
+        return ans;
+    }
+
+    int getSize() { 
+        // Implement the getSize() function here
+        return ab.size();
+    }
+
+    bool isEmpty() {
+        // Implement the isEmpty() function here
+        return ab.size()==0;
+    }
+};
